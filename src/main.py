@@ -15,6 +15,8 @@ from  authentication import oauth
 from bulk_query.query import BulkQuery
 from bulk_ingest.ingest import BulkIngest
 
+from sobjects.objects import Objects
+
 load_dotenv() # retorna variáveis de ambiente do arquivo .env
 
  # GLOBAL VARIABLES
@@ -121,26 +123,32 @@ bearer_acces_token = oauth.generate_token(
 # print(response.content)
 
 
+# ingest = BulkIngest(
+
+#     bearer_token=      bearer_acces_token,
+#     consumer_key=      Params.CONSUMER_KEY,
+#     consumer_secret=   Params.CONSUMER_SECRET,
+#     instance_url=      Params.DOMAIN_URI    
+# )
 
 
+# job_id = ingest.create_injest_job(operation="insert", object_name="Account")
 
-ingest = BulkIngest(
 
-    bearer_token=      bearer_acces_token,
-    consumer_key=      Params.CONSUMER_KEY,
-    consumer_secret=   Params.CONSUMER_SECRET,
-    instance_url=      Params.DOMAIN_URI    
+# dirname = os.path.dirname(__file__)
+# IN_DATA_DIR = os.path.join(dirname, 'data','input')
+
+
+# csv_path = os.path.join(IN_DATA_DIR, 'insert_accounts.csv')
+
+
+# ingest.upload_job_data(csv_file_path=csv_path,job_id=job_id)
+
+
+object = Objects(
+    bearer_token= bearer_acces_token,
+    instance_url= Params.DOMAIN_URI
 )
 
-
-job_id = ingest.create_injest_job(operation="insert", object_name="Account")
-
-
-dirname = os.path.dirname(__file__)
-IN_DATA_DIR = os.path.join(dirname, 'data','input')
-
-
-csv_path = os.path.join(IN_DATA_DIR, 'insert_accounts.csv')
-
-
-ingest.upload_job_data(csv_file_path=csv_path,job_id=job_id)
+# objects = object.get_list_of_available_objects()
+# print(json.dumps(objects, indent=4))
