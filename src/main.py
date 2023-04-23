@@ -11,18 +11,18 @@ from urllib.parse import urljoin
 
 # Libraries and packages
 from  authentication import oauth
-from bulk_query import bulk_query
 
 from bulk_query.query import BulkQuery
+from bulk_ingest.ingest import BulkIngest
 
 load_dotenv() # retorna variáveis de ambiente do arquivo .env
 
  # GLOBAL VARIABLES
  # ********************************************************
 
-class Params: 
+class Params:
 
-
+    
     API_VERSION =  'v56.0'
 
     # Credentials
@@ -67,29 +67,29 @@ bearer_acces_token = oauth.generate_token(
 # 02. Creating a new Query Job
 # ***********************************************************
 
-query = BulkQuery(
+# query = BulkQuery(
 
-    bearer_token=      bearer_acces_token,
-    consumer_key=      Params.CONSUMER_KEY,
-    consumer_secret=   Params.CONSUMER_SECRET,
-    instance_url=      Params.DOMAIN_URI, 
+#     bearer_token=      bearer_acces_token,
+#     consumer_key=      Params.CONSUMER_KEY,
+#     consumer_secret=   Params.CONSUMER_SECRET,
+#     instance_url=      Params.DOMAIN_URI, 
     
-)
+# )
 
-soql_query= """ 
-    SELECT 
-            Name,
-            Account_Record_ID__c,
-            ZC_P1_Xplan_ID__c
-    FROM ZAccount__c"""
+# soql_query= """ 
+#     SELECT 
+#             Name,
+#             Account_Record_ID__c,
+#             ZC_P1_Xplan_ID__c
+#     FROM ZAccount__c"""
 
-query_job = query.create_query_job(soql_query=soql_query)
+# query_job = query.create_query_job(soql_query=soql_query)
 
-print(json.dumps(query_job, indent=4))
+# print(json.dumps(query_job, indent=4))
 
-job_id = query_job['id']
+# job_id = query_job['id']
 
-time.sleep(5)
+# time.sleep(5)
 
 
 
@@ -106,23 +106,41 @@ time.sleep(5)
 # 04. Get Info about Query Job
 # ***********************************************************
 
-job_info = query.get_info_about_query_job(job_id=job_id)
-print(job_info)
+# job_info = query.get_info_about_query_job(job_id=job_id)
+# print(job_info)
 
 
-# 05. Get Query Job Results
-# ***********************************************************
+# # 05. Get Query Job Results
+# # ***********************************************************
 
-response = query.get_query_job_results(job_id=job_id)
+# response = query.get_query_job_results(job_id=job_id)
 
-print('* Results\n')
-print(response.headers)
-print("* type: ", type( response.content))
-print(response.content)
-
-
+# print('* Results\n')
+# print(response.headers)
+# print("* type: ", type( response.content))
+# print(response.content)
 
 
 
 
 
+ingest = BulkIngest(
+
+    bearer_token=      bearer_acces_token,
+    consumer_key=      Params.CONSUMER_KEY,
+    consumer_secret=   Params.CONSUMER_SECRET,
+    instance_url=      Params.DOMAIN_URI    
+)
+
+
+job_id = ingest.create_injest_job(operation="insert", object_name="Account")
+
+
+dirname = os.path.dirname(__file__)
+IN_DATA_DIR = os.path.join(dirname, 'data','input')
+
+
+csv_path = os.path.join(IN_DATA_DIR, 'insert_accounts.csv')
+
+
+ingest.upload_job_data(csv_file_path=csv_path,job_id=job_id)

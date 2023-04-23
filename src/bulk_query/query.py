@@ -51,7 +51,7 @@ class BulkQuery:
             if response.status_code >= 200 and response.status_code < 300:
                 return response.json()
             else:
-                print('Somethin is wrong:')
+                print('Something is wrong:')
                 return response.json()
 
         except Exception as e:            
@@ -105,7 +105,7 @@ class BulkQuery:
             if response.status_code >= 200 and response.status_code < 300:
                 return response.json()
             else:
-                print('Somethin is wrong:')
+                print('Something is wrong:')
                 return response.json()
 
         except Exception as e:            
@@ -130,7 +130,7 @@ class BulkQuery:
             if response.status_code >= 200 and response.status_code < 300:
                 return response
             else:
-                print('Somethin is wrong:')
+                print('Something is wrong:')
                 return response.json()
 
         except Exception as e:            
@@ -161,7 +161,7 @@ class BulkQuery:
             if response.status_code >= 200 and response.status_code < 300:
                 return response.json()
             else:
-                print('Somethin is wrong:')
+                print('Something is wrong:')
                 return response.json()
 
         except Exception as e:            
@@ -185,7 +185,7 @@ class BulkQuery:
             if response.status_code >= 200 and response.status_code < 300:
                 return response.json()
             else:
-                print('Somethin is wrong:')
+                print('Something is wrong:')
                 return response.json()
 
         except Exception as e:            
